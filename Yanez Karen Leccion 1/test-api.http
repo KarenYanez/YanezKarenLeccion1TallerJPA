@@ -1,0 +1,110 @@
+### API RESTful para Gestión de Tickets de Soporte Técnico
+### Ejemplos de peticiones HTTP para testing
+
+### 1. Crear un nuevo ticket
+POST http://localhost:8080/api/v1/support-tickets
+Content-Type: application/json
+
+{
+  "requesterName": "Juan Pérez",
+  "status": "OPEN",
+  "priority": "HIGH",
+  "category": "NETWORK",
+  "estimatedCost": 150.50,
+  "currency": "USD",
+  "dueDate": "2025-12-31"
+}
+
+###
+
+### 2. Listar todos los tickets (sin filtros)
+GET http://localhost:8080/api/v1/support-tickets
+
+###
+
+### 3. Búsqueda por texto
+GET http://localhost:8080/api/v1/support-tickets?q=juan
+
+###
+
+### 4. Filtrar por estado
+GET http://localhost:8080/api/v1/support-tickets?status=OPEN
+
+###
+
+### 5. Filtrar por moneda
+GET http://localhost:8080/api/v1/support-tickets?currency=USD
+
+###
+
+### 6. Filtrar por rango de costos
+GET http://localhost:8080/api/v1/support-tickets?minCost=50&maxCost=300
+
+###
+
+### 7. Filtrar por rango de fechas
+GET http://localhost:8080/api/v1/support-tickets?from=2025-01-01T00:00:00&to=2025-12-31T23:59:59
+
+###
+
+### 8. Combinar múltiples filtros
+GET http://localhost:8080/api/v1/support-tickets?q=john&status=OPEN&currency=USD&minCost=100&page=0&size=10&sort=createdAt,desc
+
+###
+
+### 9. Probar paginación
+GET http://localhost:8080/api/v1/support-tickets?page=0&size=5&sort=createdAt,desc
+
+###
+
+### 10. Probar ordenamiento ascendente
+GET http://localhost:8080/api/v1/support-tickets?sort=requesterName,asc
+
+###
+
+### 11. Probar error de validación (estado inválido)
+GET http://localhost:8080/api/v1/support-tickets?status=INVALID
+
+###
+
+### 12. Probar error de validación (costo negativo)
+GET http://localhost:8080/api/v1/support-tickets?minCost=-50
+
+###
+
+### 13. Probar error de validación (rango de fechas inválido)
+GET http://localhost:8080/api/v1/support-tickets?from=2025-12-31T23:59:59&to=2025-01-01T00:00:00
+
+###
+
+### 14. Crear ticket con datos de prueba adicionales
+POST http://localhost:8080/api/v1/support-tickets
+Content-Type: application/json
+
+{
+  "requesterName": "María García",
+  "status": "IN_PROGRESS",
+  "priority": "MEDIUM",
+  "category": "SOFTWARE",
+  "estimatedCost": 200.00,
+  "currency": "EUR",
+  "dueDate": "2025-12-25"
+}
+
+###
+
+### 15. Crear ticket de baja prioridad
+POST http://localhost:8080/api/v1/support-tickets
+Content-Type: application/json
+
+{
+  "requesterName": "Carlos López",
+  "status": "RESOLVED",
+  "priority": "LOW",
+  "category": "HARDWARE",
+  "estimatedCost": 75.25,
+  "currency": "USD",
+  "dueDate": "2025-12-20"
+}
+
+###
