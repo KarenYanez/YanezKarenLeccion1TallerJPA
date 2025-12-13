@@ -1,0 +1,14 @@
+com\example\supporttickets\service\SupportTicketService.class
+com\example\supporttickets\exception\GlobalExceptionHandler.class
+com\example\supporttickets\exception\InvalidFilterException.class
+com\example\supporttickets\dto\SupportTicketResponse.class
+com\example\supporttickets\SupportTicketsApplication.class
+com\example\supporttickets\model\TicketPriority.class
+com\example\supporttickets\exception\ErrorResponse.class
+com\example\supporttickets\model\TicketStatus.class
+com\example\supporttickets\model\SupportTicket.class
+com\example\supporttickets\exception\ResourceNotFoundException.class
+com\example\supporttickets\model\Currency.class
+com\example\supporttickets\controller\SupportTicketController.class
+com\example\supporttickets\repository\SupportTicketRepository.class
+com\example\supporttickets\dto\SupportTicketRequest.class

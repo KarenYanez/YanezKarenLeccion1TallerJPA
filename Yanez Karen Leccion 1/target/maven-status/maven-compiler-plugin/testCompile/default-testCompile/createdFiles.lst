@@ -1,0 +1,3 @@
+com\example\supporttickets\controller\SupportTicketControllerTest.class
+com\example\supporttickets\service\SupportTicketServiceTest.class
+com\example\supporttickets\service\SimpleSupportTicketServiceTest.class
