@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_tickets
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: ticketsdb2025
+      MYSQL_USER: AppRoot
+      MYSQL_PASSWORD: abcd
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./docker-init:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    networks:
+      - tickets-network
+
+  app:
+    build: .
+    container_name: tickets-api
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: jdbc:mysql://mysql_tickets:3306/ticketsdb2025?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      DB_USER: AppRoot
+      DB_PASSWORD: abcd
+      DB_PORT: 3306
+      DB_NAME: ticketsdb2025
+      # Configuración de conexión para retry
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 5
+      SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE: 2
+      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: 30000
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 20000
+      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: 1800000
+    restart: unless-stopped
+    networks:
+      - tickets-network
+
+volumes:
+  mysql-data:
+
+networks:
+  tickets-network:
+    driver: bridge
