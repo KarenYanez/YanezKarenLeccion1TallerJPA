@@ -3,6 +3,7 @@ package com.example.supporttickets.service;
 import com.example.supporttickets.dto.SupportTicketRequest;
 import com.example.supporttickets.dto.SupportTicketResponse;
 import com.example.supporttickets.exception.InvalidFilterException;
+import com.example.supporttickets.exception.ResourceNotFoundException;
 import com.example.supporttickets.model.SupportTicket;
 import com.example.supporttickets.model.TicketStatus;
 import com.example.supporttickets.model.Currency;
@@ -71,6 +72,65 @@ public class SupportTicketService {
                 fromDateTime, toDateTime, pageable);
         
         return tickets.map(this::convertToResponse);
+    }
+
+    public SupportTicketResponse findTicketById(Long id) {
+        SupportTicket ticket = supportTicketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado con ID: " + id));
+        return convertToResponse(ticket);
+    }
+
+    public SupportTicketResponse updateTicket(Long id, SupportTicketRequest request) {
+        SupportTicket existingTicket = supportTicketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado con ID: " + id));
+
+        existingTicket.setRequesterName(request.getRequesterName());
+        existingTicket.setStatus(request.getStatus());
+        existingTicket.setPriority(request.getPriority());
+        existingTicket.setCategory(request.getCategory());
+        existingTicket.setEstimatedCost(request.getEstimatedCost());
+        existingTicket.setCurrency(request.getCurrency());
+        existingTicket.setDueDate(request.getDueDate());
+
+        SupportTicket updatedTicket = supportTicketRepository.save(existingTicket);
+        return convertToResponse(updatedTicket);
+    }
+
+    public SupportTicketResponse partialUpdateTicket(Long id, SupportTicketRequest request) {
+        SupportTicket existingTicket = supportTicketRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Ticket no encontrado con ID: " + id));
+
+        if (request.getRequesterName() != null) {
+            existingTicket.setRequesterName(request.getRequesterName());
+        }
+        if (request.getStatus() != null) {
+            existingTicket.setStatus(request.getStatus());
+        }
+        if (request.getPriority() != null) {
+            existingTicket.setPriority(request.getPriority());
+        }
+        if (request.getCategory() != null) {
+            existingTicket.setCategory(request.getCategory());
+        }
+        if (request.getEstimatedCost() != null) {
+            existingTicket.setEstimatedCost(request.getEstimatedCost());
+        }
+        if (request.getCurrency() != null) {
+            existingTicket.setCurrency(request.getCurrency());
+        }
+        if (request.getDueDate() != null) {
+            existingTicket.setDueDate(request.getDueDate());
+        }
+
+        SupportTicket updatedTicket = supportTicketRepository.save(existingTicket);
+        return convertToResponse(updatedTicket);
+    }
+
+    public void deleteTicket(Long id) {
+        if (!supportTicketRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Ticket no encontrado con ID: " + id);
+        }
+        supportTicketRepository.deleteById(id);
     }
 
     private String generateTicketNumber() {

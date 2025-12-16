@@ -108,3 +108,71 @@ Content-Type: application/json
 }
 
 ###
+
+### 16. Obtener ticket por ID
+GET http://localhost:8080/api/v1/support-tickets/1
+
+###
+
+### 17. Actualizar ticket completo (PUT)
+PUT http://localhost:8080/api/v1/support-tickets/1
+Content-Type: application/json
+
+{
+  "requesterName": "Juan Pérez Actualizado",
+  "status": "IN_PROGRESS",
+  "priority": "MEDIUM",
+  "category": "HARDWARE",
+  "estimatedCost": 180.75,
+  "currency": "USD",
+  "dueDate": "2025-12-28"
+}
+
+###
+
+### 18. Actualización parcial (PATCH) - solo estado
+PATCH http://localhost:8080/api/v1/support-tickets/1
+Content-Type: application/json
+
+{
+  "status": "RESOLVED"
+}
+
+###
+
+### 19. Actualización parcial (PATCH) - solo prioridad y costo
+PATCH http://localhost:8080/api/v1/support-tickets/1
+Content-Type: application/json
+
+{
+  "priority": "HIGH",
+  "estimatedCost": 200.00
+}
+
+###
+
+### 20. Eliminar ticket
+DELETE http://localhost:8080/api/v1/support-tickets/3
+
+###
+
+### 21. Probar error - ticket no encontrado
+GET http://localhost:8080/api/v1/support-tickets/999
+
+###
+
+### 22. Probar error - actualizar ticket inexistente
+PUT http://localhost:8080/api/v1/support-tickets/999
+Content-Type: application/json
+
+{
+  "requesterName": "Test",
+  "status": "OPEN",
+  "priority": "LOW",
+  "category": "TEST",
+  "estimatedCost": 50.00,
+  "currency": "USD",
+  "dueDate": "2025-12-30"
+}
+
+###

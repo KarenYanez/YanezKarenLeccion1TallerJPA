@@ -24,7 +24,7 @@ services:
       - tickets-network
 
   app:
-    build: .
+    image: tuusuario/yanez-ticket:latest
     container_name: tickets-api
     ports:
       - "8080:8080"

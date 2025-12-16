@@ -46,4 +46,32 @@ public class SupportTicketController {
         
         return ResponseEntity.ok(tickets);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SupportTicketResponse> getTicketById(@PathVariable Long id) {
+        SupportTicketResponse ticket = supportTicketService.findTicketById(id);
+        return ResponseEntity.ok(ticket);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SupportTicketResponse> updateTicket(
+            @PathVariable Long id, 
+            @Valid @RequestBody SupportTicketRequest request) {
+        SupportTicketResponse updatedTicket = supportTicketService.updateTicket(id, request);
+        return ResponseEntity.ok(updatedTicket);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<SupportTicketResponse> partialUpdateTicket(
+            @PathVariable Long id, 
+            @RequestBody SupportTicketRequest request) {
+        SupportTicketResponse updatedTicket = supportTicketService.partialUpdateTicket(id, request);
+        return ResponseEntity.ok(updatedTicket);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
+        supportTicketService.deleteTicket(id);
+        return ResponseEntity.noContent().build();
+    }
 }
